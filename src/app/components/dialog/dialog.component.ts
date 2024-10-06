@@ -1,3 +1,4 @@
+import { ComponentType } from '@angular/cdk/portal';
 import {ChangeDetectionStrategy, Component, inject, model, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
@@ -32,9 +33,9 @@ export class DialogComponent {
   readonly name = model('');
   readonly dialog = inject(MatDialog);
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {name: this.name(), animal: this.animal()},
+  openDialog<T, Td>(component:ComponentType<T>, data:Td): void {
+    const dialogRef = this.dialog.open(component, {
+      data: data,
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -44,6 +45,19 @@ export class DialogComponent {
       }
     });
   }
+
+  // openDialog<T, Td>(component:ComponentType<T>, data:Td): void {
+  //   const dialogRef = this.dialog.open(component, {
+  //     data: {name: this.name(), animal: this.animal()},
+  //   });
+
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('The dialog was closed');
+  //     if (result !== undefined) {
+  //       this.animal.set(result);
+  //     }
+  //   });
+  // }
 }
 
 @Component({
