@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DatepickerComponent, DatepickerService } from '../../components/datepicker/datepicker.component';
+import { ComponentDataSharing } from '../../components/components.share';
+import { DatepickerComponent } from '../../components/datepicker/datepicker.component';
 
 @Component({
   selector: 'app-login',
@@ -12,17 +13,21 @@ import { DatepickerComponent, DatepickerService } from '../../components/datepic
 export class LoginComponent implements OnInit {
 
   data: string = "";
-  constructor( private datepickerService: DatepickerService){}
+  fillInputValue: string = "";
+
+  constructor( private datePickerData: ComponentDataSharing){}
 
   ngOnInit(): void {
-    this.datepickerService.currentData.subscribe(data => {
+    this.datePickerData.currentData.subscribe(data => {
       this.data = data;
-      console.log('Updated data:', this.data);
+    });
+    this.datePickerData.currentInputValueFill.subscribe(data => {
+      this.fillInputValue = data;
     });
   }
 
   submit = () => {
-    console.log('submit data:', this.data);
+    console.log('submit data:', this.data, "input value:", this.fillInputValue);
   };
 
 }

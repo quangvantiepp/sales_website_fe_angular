@@ -1,11 +1,15 @@
-import { ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { DialogComponent } from '../components/dialog/dialog.component';
-import { OutlineComponent } from '../components/formField/outline/outline.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterOutlet } from '@angular/router';
 import { DatepickerComponent } from '../components/datepicker/datepicker.component';
+import { DialogComponent } from '../components/dialog/dialog.component';
+import { FillComponent } from '../components/formField/fill/fill.component';
+import { OutlineComponent } from '../components/formField/outline/outline.component';
 import { LoginComponent } from '../pages/login/login.component';
 
 const today = new Date();
@@ -22,8 +26,8 @@ interface InputData{
   standalone: true,
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
-  providers: [provideNativeDateAdapter(), DialogComponent, OutlineComponent, LoginComponent, DatepickerComponent],
-  imports: [MatFormFieldModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, DialogComponent],
+  providers: [provideNativeDateAdapter(), DialogComponent, OutlineComponent, LoginComponent, DatepickerComponent, FillComponent],
+  imports: [RouterOutlet, MatFormFieldModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, MatButtonModule, MatMenuModule, DialogComponent, LoginComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {
@@ -40,7 +44,11 @@ export class LayoutComponent {
   // }
 
   openDialogComponent() {
-    this.dialogComponent.openDialog<LoginComponent, {data:InputData} >(LoginComponent, {data:{
+    // this.dialogComponent.openDialog<LoginComponent, {data:InputData} >(LoginComponent, {data:{
+    //   type:"",
+    //   value:"",
+    // }})
+    this.dialogComponent.openDialog<FillComponent, {data:InputData} >(FillComponent, {data:{
       type:"",
       value:"",
     }})

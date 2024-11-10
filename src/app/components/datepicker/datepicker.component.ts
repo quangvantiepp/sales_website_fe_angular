@@ -1,10 +1,10 @@
 import { formatDate } from '@angular/common';
-import { Component, computed, inject, Injectable, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { BehaviorSubject } from 'rxjs';
+import { ComponentDataSharing } from '../components.share';
 
 
 @Component({
@@ -32,27 +32,10 @@ export class DatepickerComponent {
     return '';
   });
 
-  constructor(private datepickerService: DatepickerService) {}
+  constructor(private datepickerData: ComponentDataSharing) {}
 
   onDateChange = (event: any) => {
     const formattedDate = formatDate(event?.target.value, 'MMM d, y, h:mm:ss a', 'en-US');
-    this.datepickerService.setDate(formattedDate);
-    console.log('dateChange:', formattedDate);
+    this.datepickerData.setDate(formattedDate);
   };
-}
-
-@Injectable({
-  providedIn: 'root',
-   /**
-   * Make sure this service is shared by all applications.
-   * Makes the service usable in any component or service without having to add it to the providers array
-   */
-})
-export class DatepickerService {
-  private fullDate = new BehaviorSubject<string>('Initial data');
-  currentData = this.fullDate.asObservable();
-
-  setDate(date: string) {
-    this.fullDate.next(date);
-  }
 }
